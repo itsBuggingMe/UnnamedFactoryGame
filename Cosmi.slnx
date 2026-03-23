@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Cosmi/Cosmi.csproj" />
+  <Project Path="Paper.Core/Paper.Core.Batcher/Paper.Core.Batcher.csproj" />
+  <Project Path="Paper.Core/Paper.Core/Paper.Core.csproj" />
+</Solution>
