@@ -1,0 +1,3 @@
+[submodule "Paper.Core"]
+	path = Paper.Core
+	url = https://github.com/itsBuggingMe/Paper.Core
