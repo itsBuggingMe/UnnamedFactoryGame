@@ -1,4 +1,5 @@
 ﻿using Frent;
+using ImGuiNET;
 using System;
 using System.Buffers;
 
@@ -7,6 +8,7 @@ namespace Cosmi.Level;
 internal class Chunk
 {
     public const int ChunkSize = 32;
+    public const int Log2ChunkSize = 5;
 
     private FloorTileKind[] _floor;
     private Entity[] _tiles;

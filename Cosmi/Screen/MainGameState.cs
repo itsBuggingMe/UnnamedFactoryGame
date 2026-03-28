@@ -27,25 +27,34 @@ internal class MainGameScreen : IScreen
 
         _tiles.LoadChunk(default);
 
-        SpriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+        SpriteBatch = graphics.SpriteBatch;
     }
 
     public void Update(Time gameTime)
     {
-        
+        Vector2 cameraDelta = default;
+        if (InputHelper.Down(Keys.W)) cameraDelta += Vector2.UnitY;
+        if (InputHelper.Down(Keys.S)) cameraDelta -= Vector2.UnitY;
+        if (InputHelper.Down(Keys.D)) cameraDelta -= Vector2.UnitX;
+        if (InputHelper.Down(Keys.A)) cameraDelta += Vector2.UnitX;
+
+        if (InputHelper.Down(MouseButton.Left))
+            _tiles.FloorTileAt((_camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2()) / 32).ToPoint()) = default;
+        if (InputHelper.Down(MouseButton.Right))
+            _tiles.FloorTileAt((_camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2()) / 32).ToPoint()) = FloorTileKind.Grass;
+        _camera.Position += cameraDelta;
     }
 
     public void Draw(Time gameTime)
     {
         _graphics.GraphicsDevice.Clear(Color.Black);
 
+        SpriteBatch.Begin(transformMatrix: _camera.View * _camera.Projection);
+
         _tiles.Draw(_graphics);
-
-
         _batcher.Submit(_camera.View, _camera.Projection);
 
-        //SpriteBatch.Begin();
-        //SpriteBatch.Draw(_batcher._atlas, default(Vector2), Color.White);
-        //SpriteBatch.End();
+        
+        SpriteBatch.End();
     }
 }

@@ -8,4 +8,5 @@ global using Paper.Core.Memory;
 global using Paper.Core;
 
 global using Cosmi.Drawing;
+global using Cosmi.Extensions;
 global using Cosmi;
