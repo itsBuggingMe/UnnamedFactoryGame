@@ -29,8 +29,8 @@ internal class Chunk
     {
         get
         {
-            ArgumentOutOfRangeException.ThrowIfLessThan((uint)cx, (uint)ChunkSize);
-            ArgumentOutOfRangeException.ThrowIfLessThan((uint)cy, (uint)ChunkSize);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual((uint)cx, (uint)ChunkSize);
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual((uint)cy, (uint)ChunkSize);
             return ref _tiles[cx + cy * ChunkSize];
         }
     }

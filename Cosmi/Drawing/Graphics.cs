@@ -10,16 +10,20 @@ internal class Graphics : GraphicsBase
     public AtlasBatcher Batcher { get; }
     public TextureHandle SimpleTile { get; }
     public TextureHandle GrassTileset { get; }
+    public TextureHandle Bullet0 { get; }
+    public TextureHandle Casing0 { get; }
 
     public Graphics(GraphicsDeviceManager graphicsDeviceManager, ContentManager content, Game game) : base(graphicsDeviceManager, content, game)
     {
         Batcher = new AtlasBatcher(graphicsDeviceManager.GraphicsDevice, content);
         SimpleTile = LoadTexture("tile_simple");
         GrassTileset = LoadTexture("grass_dual");
+        Bullet0 = LoadTexture("bullet_0");
+        Casing0 = LoadTexture("casing_0");
 
         TextureHandle LoadTexture(string assetName)
         {
-            return Batcher.CreateHandle(content.Load<Texture2D>(assetName));
+            return Batcher.GetTextureHandle(content.Load<Texture2D>(assetName));
         }
     }
 }

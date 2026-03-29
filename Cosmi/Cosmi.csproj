@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
@@ -23,12 +23,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoPipeline" Version="0.0.2" />
+    <MonoGameTextureAsset Include="Content\casing_0.png" />
+    <MonoGameTextureAsset Include="Content\bullet_0.png" />
+    <MonoGameTextureAsset Include="Content\round_0.png" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Paper.Core\Paper.Core.Batcher\Paper.Core.Batcher.csproj" />
+    <ProjectReference Include="..\Paper.Core\Paper.Core.Generator\Paper.Core.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\Paper.Core\Paper.Core\Paper.Core.csproj" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="CollectPackageReferences">

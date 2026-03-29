@@ -16,9 +16,6 @@ public class GameRoot : Game
         Window.AllowUserResizing = true;
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-
-        _graphics.SynchronizeWithVerticalRetrace = false;
-        IsFixedTimeStep = false;
     }
 
     protected override void Initialize()

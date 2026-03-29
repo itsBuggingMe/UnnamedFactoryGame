@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Frent;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
@@ -14,6 +15,17 @@ internal class TileGrid
         Point chunkCoord = worldCoord >> Chunk.Log2ChunkSize;
         Point tileCoord = worldCoord & lowerMask;
         return ref _chunks[chunkCoord].FloorAt(tileCoord.X, tileCoord.Y);
+    }
+
+    public ref Entity this[Point worldCoord]
+    {
+        get
+        {
+            int lowerMask = Chunk.ChunkSize - 1;
+            Point chunkCoord = worldCoord >> Chunk.Log2ChunkSize;
+            Point tileCoord = worldCoord & lowerMask;
+            return ref _chunks[chunkCoord][tileCoord.X, tileCoord.Y];
+        }
     }
 
     private readonly Dictionary<Point, Chunk> _chunks = [];
