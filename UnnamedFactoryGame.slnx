@@ -1,6 +1,6 @@
 <Solution>
-  <Project Path="Cosmi/Cosmi.csproj" />
   <Project Path="Paper.Core/Paper.Core.Batcher/Paper.Core.Batcher.csproj" />
   <Project Path="Paper.Core/Paper.Core.Generator/Paper.Core.Generator.csproj" />
   <Project Path="Paper.Core/Paper.Core/Paper.Core.csproj" />
+  <Project Path="UnnamedFactoryGame/UnnamedFactoryGame.csproj" />
 </Solution>
