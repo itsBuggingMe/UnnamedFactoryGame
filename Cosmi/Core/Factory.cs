@@ -3,19 +3,24 @@ using Frent;
 using Paper.Core.Batcher;
 using System;
 
-namespace Cosmi.Entities;
+namespace Cosmi.Core;
 
 internal static class Factory
 {
     extension(World w)
     {
         public Entity CreateBullet(Vector2 position, Vector2 velocity)
-        {
+        {   
             return w.Create(
                 new Transform(position, velocity == default ? default : Helper.MeasureAngle(velocity) + MathHelper.PiOver2),
                 new Velocity(velocity),
                 new Sprite(w.UniformProvider.GetUniform<Graphics>().Bullet0, true),
                 new Decay(60));
+        }
+
+        public Entity CreateItem(Vector2 position, TextureHandle textureHandle)
+        {
+            return w.Create(new Transform(position, Random.Shared.NextSingle() * MathHelper.TwoPi), new Item(), new Sprite(textureHandle, true));
         }
     }
 

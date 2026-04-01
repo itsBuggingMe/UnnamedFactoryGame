@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Cosmi.Level;
 
@@ -78,15 +80,18 @@ internal class TileGrid
             {
                 for (int j = 1; j < Chunk.ChunkSize; j++)
                 {
-                    g.SpriteBatch.DrawString(g.Fonts.Main, chunk.FloorAt(i, j).ToString(), new Vector2(i, j) * TilePixelSize, Color.White);
-                    g.SpriteBatch.DrawString(g.Fonts.Main, "test", default, Color.White);
+                    var tileKind = chunk.FloorAt(i - 1, j - 1);
                     g.Batcher.Draw(g.GrassTileset, chunkOriginOffset + new Vector2(i, j) * TilePixelSize)
                         .SetSource(MapSourceRectangle(
-                            chunk.FloorAt(i - 1, j - 1),
+                            tileKind,
                             chunk.FloorAt(i, j - 1),
                             chunk.FloorAt(i - 1, j),
                             chunk.FloorAt(i, j))
                         );
+                    if(tileKind is not FloorTileKind.Grass and not FloorTileKind.Void)
+                    {
+                        g.Batcher.Draw(g.IronOre, chunkOrigin + new Vector2(i - 1, j - 1) * TilePixelSize);
+                    }
                 }
             }
         }

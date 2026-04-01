@@ -1,7 +1,7 @@
 ﻿using Cosmi.Components;
-using Cosmi.Entities;
 using Cosmi.Level;
 using Frent;
+using Frent.Serialization;
 using Paper.Core.Batcher;
 
 namespace Cosmi.Screen;
@@ -38,13 +38,51 @@ internal class MainGameScreen : IScreen
         _uniforms = new DefaultUniformProvider()
             .Add(graphics)
             .Add(graphics.Batcher)
+            .Add(graphics.Camera)
             .Add(_tiles)
             ;
 
         _world = new World(_uniforms);
+        _uniforms.Add(_world);
 
-        for(int i = 0; i < 10; i++)
-            _world.Create(new Transform(), new TileEntity(new(10, 5)), Animation.Conveyor, new Sprite());
+        Entity mouseEntity = _world.Create(new Transform(), new MousePosition());
+
+        int i = 1;
+        for (; i < 10; i++)
+        {
+            Entity conveyor = _world.Create(new Transform(), new TileEntity(new(i, 5)), new ItemAcceptor(), new Conveyor(CardinalDirection.Right), Animation.Conveyor, new Sprite());
+            
+            for(int j = 0; j < 4; j++)
+            {
+                conveyor.Get<Conveyor>()[j] = _world.CreateItem(default, graphics.Round0);
+            }
+        }
+        
+        var turretBase = _world.Create(
+            new Transform(),
+            new TileEntity(new(i, 5)),
+            new ItemAcceptor(),
+            new Sprite(graphics.TurretBase)
+            );
+
+        _world.Create(
+            new Transform(),
+            new Turret(turretBase),
+            new RotateTowards(mouseEntity),
+            new Sprite(graphics.TurretDouble, new Vector2(16)));
+
+        for (i = 5; i < 16; i++)
+        {
+            var e = _world.Create(new Transform(), new TileEntity(new(i, 8)), new ItemAcceptor(), new Conveyor(CardinalDirection.Right), Animation.Conveyor, new Sprite());
+        }
+
+        var mine = _world.Create(
+            new Transform(),
+            new TileEntity(new(4, 8)),
+            new Mine() { Facing = CardinalDirection.Right },
+            Animation.Mine,
+            new Sprite(graphics.Mine)
+            );
     }
 
     public void Update(Time gameTime)
@@ -61,18 +99,23 @@ internal class MainGameScreen : IScreen
 
         _camera.Position += cameraDelta * gameTime.FrameDeltaTime * 5;
 
-        if (InputHelper.Down(MouseButton.Left))
-            _tiles.FloorTileAt((_camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2()) / 32).ToPoint()) = default;
-        if (InputHelper.Down(MouseButton.Right))
+        if (InputHelper.Down(MouseButton.Left) && InputHelper.Down(Keys.LeftControl))
+            _tiles.FloorTileAt((_camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2()) / 32).ToPoint()) = FloorTileKind.Iron;
+        if (InputHelper.Down(MouseButton.Right) && InputHelper.Down(Keys.LeftControl))
             _tiles.FloorTileAt((_camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2()) / 32).ToPoint()) = FloorTileKind.Grass;
 
-        if (InputHelper.RisingEdge(MouseButton.Left))
+        _camera.Scale *= InputHelper.DeltaScroll switch
         {
-            _world.CreateBullet(mousePos, Vector2.UnitX * 16);
-            _world.CasingFallingParticle(_graphics.Casing0, mousePos);
-        }
+            > 0 => 1.1f,
+            < 0 => 1 / 1.1f,
+            _ => 1
+        };
 
-        _world.Update<TickAttribute>();
+        if(!InputHelper.Down(Keys.F3) || InputHelper.RisingEdge(Keys.P))
+        {
+            _world.Update<TickAttribute>();
+            _world.Update<LateTickAttribute>();
+        }
     }
 
     public void Draw(Time gameTime)

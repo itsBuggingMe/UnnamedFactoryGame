@@ -61,7 +61,9 @@ internal struct Animation : IInitable, IUniformUpdate<Time, Sprite>
         InitalFrame = new Rectangle(Point.Zero, new(TileGrid.TilePixelSize)),
         FrameOffset = new(TileGrid.TilePixelSize, 0),
         Spritesheet = "conveyor",
-        FrameTime = 8,
+        FrameTime = Components.Conveyor.Speed / 8,
         FrameCount = 8,
     };
+
+    public static readonly Animation Mine = Conveyor with { Spritesheet = "mine" };
 }
