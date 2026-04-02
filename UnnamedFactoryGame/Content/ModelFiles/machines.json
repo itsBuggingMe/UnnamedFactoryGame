@@ -1,0 +1,47 @@
+[
+    {
+        "texture": "coke_oven",
+        "name": "coke_oven",
+        "hitbox": [
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 1,
+                "y": 0
+            },
+            {
+                "x": 0,
+                "y": 1
+            },
+            {
+                "x": 1,
+                "y": 1
+            }
+        ],
+        "inputs": [
+            {
+                "x": 0,
+                "y": 0,
+                "direction": "right",
+                "accepts": "coal_ore"
+            },
+            {
+                "x": 0,
+                "y": 1,
+                "direction": "right",
+                "accepts": "coal_ore"
+            }
+        ],
+        "outputs": [
+            {
+                "x": 1,
+                "y": 0,
+                "direction": "right"
+            }
+        ],
+        "additional_components": [],
+        "additional_component_types": []
+    }
+]

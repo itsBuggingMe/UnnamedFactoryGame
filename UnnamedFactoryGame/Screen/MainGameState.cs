@@ -3,6 +3,7 @@ using Cosmi.Level;
 using Frent;
 using Frent.Serialization;
 using Paper.Core.Batcher;
+using UnnamedFactoryGame.Registry;
 
 namespace Cosmi.Screen;
 
@@ -17,6 +18,8 @@ internal class MainGameScreen : IScreen
     private readonly TileGrid _tiles;
     private readonly World _world;
     private readonly DefaultUniformProvider _uniforms;
+    private readonly FloorTileRegistry _floorTiles;
+    private readonly ItemRegistry _items;
 
     private SpriteBatch SpriteBatch;
 
@@ -40,6 +43,8 @@ internal class MainGameScreen : IScreen
             .Add(graphics.Batcher)
             .Add(graphics.Camera)
             .Add(_tiles)
+            .Add(_items = new(graphics))
+            .Add(_floorTiles = new(graphics, _items))
             ;
 
         _world = new World(_uniforms);
@@ -54,7 +59,7 @@ internal class MainGameScreen : IScreen
             
             for(int j = 0; j < 4; j++)
             {
-                conveyor.Get<Conveyor>()[j] = _world.CreateItem(default, graphics.Round0);
+                conveyor.Get<Conveyor>()[j] = _items.CreateItem(_world, default, "9mm");
             }
         }
         
@@ -100,7 +105,7 @@ internal class MainGameScreen : IScreen
         _camera.Position += cameraDelta * gameTime.FrameDeltaTime * 5;
 
         if (InputHelper.Down(MouseButton.Left) && InputHelper.Down(Keys.LeftControl))
-            _tiles.FloorTileAt((_camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2()) / 32).ToPoint()) = FloorTileKind.Iron;
+            _tiles.FloorTileAt((_camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2()) / 32).ToPoint()) = FloorTileKind.Coal;
         if (InputHelper.Down(MouseButton.Right) && InputHelper.Down(Keys.LeftControl))
             _tiles.FloorTileAt((_camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2()) / 32).ToPoint()) = FloorTileKind.Grass;
 

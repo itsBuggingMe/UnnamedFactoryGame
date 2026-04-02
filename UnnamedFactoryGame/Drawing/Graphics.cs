@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Paper.Core;
 using Paper.Core.Batcher;
+using System.IO;
 
 namespace Cosmi.Drawing;
 
@@ -16,6 +17,7 @@ internal class Graphics : GraphicsBase
     public TextureHandle TurretBase { get; }
     public TextureHandle TurretDouble { get; }
     public TextureHandle IronOre { get; }
+    public TextureHandle CoalOre { get; }
     public TextureHandle IronOreItem { get; }
     public TextureHandle Mine { get; }
 
@@ -30,12 +32,13 @@ internal class Graphics : GraphicsBase
         TurretBase = LoadTexture("turret_base");
         TurretDouble = LoadTexture("turret_double");
         IronOre = LoadTexture("iron_ore");
+        CoalOre = LoadTexture("coal_ore");
         IronOreItem = LoadTexture("iron_ore_item");
         Mine = LoadTexture("mine");
 
         TextureHandle LoadTexture(string assetName)
         {
-            return Batcher.GetTextureHandle(content.Load<Texture2D>(assetName));
+            return Batcher.GetTextureHandle(content.Load<Texture2D>(Path.Combine("Textures", assetName)));
         }
     }
 }

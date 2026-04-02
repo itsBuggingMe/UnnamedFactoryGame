@@ -1,0 +1,12 @@
+[
+    {
+        "texture": "iron_ore",
+        "name": "iron_ore",
+        "mine_production_output": "iron_ore"
+    },
+    {
+        "texture": "coal_ore",
+        "name": "coal_ore",
+        "mine_production_output": "coal_ore"
+    }
+]

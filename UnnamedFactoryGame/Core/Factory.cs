@@ -17,11 +17,6 @@ internal static class Factory
                 new Sprite(w.UniformProvider.GetUniform<Graphics>().Bullet0, true),
                 new Decay(60));
         }
-
-        public Entity CreateItem(Vector2 position, TextureHandle textureHandle)
-        {
-            return w.Create(new Transform(position, Random.Shared.NextSingle() * MathHelper.TwoPi), new Item(), new Sprite(textureHandle, true));
-        }
     }
 
     /// <param name="oomph">amount of power the particle is given</param>

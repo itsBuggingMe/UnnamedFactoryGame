@@ -1,0 +1,26 @@
+[
+    {
+        "texture": "iron_ore_item",
+        "name": "iron_ore"
+    },
+    {
+        "texture": "coal_ore_item",
+        "name": "coal_ore"
+    },
+    {
+        "texture": "round_0",
+        "name": "9mm"
+    },
+    {
+        "texture": "bullet_0",
+        "name": "bullet_9mm"
+    },
+    {
+        "texture": "casing_0",
+        "name": "casing_9mm"
+    },
+    {
+        "texture": "coke",
+        "name": "coke"
+    }
+]

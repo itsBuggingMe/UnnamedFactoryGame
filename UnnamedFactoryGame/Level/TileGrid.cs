@@ -90,7 +90,12 @@ internal class TileGrid
                         );
                     if(tileKind is not FloorTileKind.Grass and not FloorTileKind.Void)
                     {
-                        g.Batcher.Draw(g.IronOre, chunkOrigin + new Vector2(i - 1, j - 1) * TilePixelSize);
+                        g.Batcher.Draw(tileKind switch
+                        {
+                            FloorTileKind.Coal => g.CoalOre,
+                            FloorTileKind.Iron => g.IronOre,
+                            _ => throw new NotImplementedException()
+                        }, chunkOrigin + new Vector2(i - 1, j - 1) * TilePixelSize);
                     }
                 }
             }
