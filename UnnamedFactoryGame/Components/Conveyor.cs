@@ -1,4 +1,4 @@
-﻿using Cosmi.Level;
+﻿using UnnamedFactoryGame.Level;
 using Frent;
 using Frent.Components;
 using System;
@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 internal struct Conveyor(CardinalDirection cardinalDirection) :
     IUniformUpdate<(Time Time, TileGrid Tiles), TileEntity, Animation, ItemAcceptor>,

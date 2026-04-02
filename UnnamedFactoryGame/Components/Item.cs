@@ -1,9 +1,9 @@
-﻿using Cosmi.Level;
+﻿using UnnamedFactoryGame.Level;
 using Frent;
 using Frent.Components;
 using System;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 internal struct Item : IInitable
 {

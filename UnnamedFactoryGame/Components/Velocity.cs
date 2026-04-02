@@ -1,6 +1,6 @@
 ﻿using Frent.Components;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 internal struct Velocity(Vector2 xy = default, float dθ = default) : IUpdate<Transform>
 {

@@ -3,7 +3,7 @@ using ImGuiNET;
 using System;
 using System.Buffers;
 
-namespace Cosmi.Level;
+namespace UnnamedFactoryGame.Level;
 
 internal class Chunk
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace Cosmi;
+namespace UnnamedFactoryGame;
 
 internal static class Throwhelper
 {

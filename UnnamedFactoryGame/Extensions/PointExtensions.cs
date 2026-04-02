@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 
-namespace Cosmi.Extensions;
+namespace UnnamedFactoryGame.Extensions;
 
 internal static class PointExtensions
 {

@@ -6,8 +6,8 @@ global using Microsoft.Xna.Framework;
 
 global using Paper.Core;
 
-global using Cosmi.Drawing;
-global using Cosmi.Extensions;
-global using Cosmi.Components;
-global using Cosmi.Core;
-global using Cosmi;
+global using UnnamedFactoryGame.Drawing;
+global using UnnamedFactoryGame.Extensions;
+global using UnnamedFactoryGame.Components;
+global using UnnamedFactoryGame.Core;
+global using UnnamedFactoryGame;

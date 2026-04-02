@@ -1,9 +1,9 @@
-﻿using Cosmi.Components;
+﻿using UnnamedFactoryGame.Components;
 using Frent;
 using Paper.Core.Batcher;
 using System;
 
-namespace Cosmi.Core;
+namespace UnnamedFactoryGame.Core;
 
 internal static class Factory
 {

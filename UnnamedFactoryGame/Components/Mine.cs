@@ -1,9 +1,9 @@
-﻿using Cosmi.Level;
+﻿using UnnamedFactoryGame.Level;
 using Frent;
 using Frent.Components;
 using UnnamedFactoryGame.Registry;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 internal struct Mine : IUniformUpdate<(TileGrid Grid, World World, FloorTileRegistry FloorTileRegistry), TileEntity>
 {

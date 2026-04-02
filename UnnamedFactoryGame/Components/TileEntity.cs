@@ -1,8 +1,8 @@
-﻿using Cosmi.Level;
+﻿using UnnamedFactoryGame.Level;
 using Frent;
 using Frent.Components;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 internal struct TileEntity(Point coord) : IInitable, IDestroyable
 {
@@ -13,7 +13,7 @@ internal struct TileEntity(Point coord) : IInitable, IDestroyable
     {
         ref Entity tileSlot = ref self.World.UniformProvider
             .GetUniform<TileGrid>()[Coordinate];
-        if (tileSlot.IsAlive)
+        if (tileSlot.IsAlive && !tileSlot.Has<MachineInput>())
             tileSlot.Delete();
         tileSlot = self;
 

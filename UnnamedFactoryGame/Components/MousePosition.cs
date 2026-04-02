@@ -1,6 +1,6 @@
 ﻿using Frent.Components;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 internal struct MousePosition : IUniformUpdate<Camera2D, Transform>
 {

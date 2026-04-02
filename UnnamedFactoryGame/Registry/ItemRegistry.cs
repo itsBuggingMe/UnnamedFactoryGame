@@ -1,10 +1,8 @@
-﻿using Frent;
+using Frent;
 using Paper.Core.Batcher;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text.Json;
 using UnnamedFactoryGame.Models;
 
 namespace UnnamedFactoryGame.Registry;
@@ -21,9 +19,8 @@ internal class ItemRegistry
 
     public ItemRegistry(Graphics g)
     {
-        Stream jsonDataStream = TitleContainer.OpenStream(Path.Join(g.Content.RootDirectory, "ModelFiles", "items.json"));
-        _items = JsonSerializer.Deserialize<List<ItemData>>(jsonDataStream) ?? [];
-        _itemsByName = _items.ToDictionary(i => i.Name, i => (i, g.Batcher.GetTextureHandle(g.Content.Load<Texture2D>(Path.Combine("Textures", i.Texture)))));
+        _items = RegistryHelper.DeserializeFromJson<ItemData>(g, "items.json");
+        _itemsByName = _items.ToDictionary(i => i.Name, i => (i, g.Batcher.GetTextureHandle(g.Content.Load<Texture2D>(i.Texture))));
     }
 
     public Entity CreateItem(World world, Vector2 position, string itemName)

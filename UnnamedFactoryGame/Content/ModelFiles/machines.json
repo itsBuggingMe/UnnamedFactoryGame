@@ -1,6 +1,6 @@
 [
     {
-        "texture": "coke_oven",
+        "texture": "Textures/coke_oven",
         "name": "coke_oven",
         "hitbox": [
             {
@@ -43,5 +43,41 @@
         ],
         "additional_components": [],
         "additional_component_types": []
+    },
+    {
+        "texture": "Textures/splitter",
+        "name": "splitter",
+        "hitbox": [
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 0,
+                "y": 1
+            }
+        ],
+        "inputs": [
+            {
+                "x": 0,
+                "y": 0,
+                "direction": "right",
+                "accepts": "*"
+            }
+        ],
+        "outputs": [
+            {
+                "x": 1,
+                "y": 0,
+                "direction": "right"
+            },
+            {
+                "x": 1,
+                "y": 1,
+                "direction": "right"
+            }
+        ],
+        "additional_components": [ {} ],
+        "additional_component_types": [ "UnnamedFactoryGame.Components.Splitter" ]
     }
 ]

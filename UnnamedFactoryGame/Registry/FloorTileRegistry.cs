@@ -1,11 +1,9 @@
-﻿using Cosmi.Level;
+using UnnamedFactoryGame.Level;
 using Frent;
 using Paper.Core.Batcher;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text.Json;
 using UnnamedFactoryGame.Models;
 
 namespace UnnamedFactoryGame.Registry;
@@ -24,11 +22,10 @@ internal class FloorTileRegistry
     public FloorTileRegistry(Graphics g, ItemRegistry itemRegistry)
     {
         _items = itemRegistry;
-        Stream jsonDataStream = TitleContainer.OpenStream(Path.Join(g.Content.RootDirectory, "ModelFiles", "floor_tiles.json"));
-        _floors = JsonSerializer.Deserialize<List<FloorTileData>>(jsonDataStream) ?? [];
+        _floors = RegistryHelper.DeserializeFromJson<FloorTileData>(g, "floor_tiles.json");
         _tilesByName = _floors.ToDictionary(i => i.Name, i => 
             (i,
-            g.Batcher.GetTextureHandle(g.Content.Load<Texture2D>(Path.Combine("Textures", i.Texture)))));
+            g.Batcher.GetTextureHandle(g.Content.Load<Texture2D>(i.Texture))));
     }
 
     public bool TryCreateMineOutput(World world, Point coordinate, FloorTileKind kind, out Entity item)

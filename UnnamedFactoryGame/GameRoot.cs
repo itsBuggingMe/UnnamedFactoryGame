@@ -1,7 +1,7 @@
-﻿using Cosmi.Screen;
+﻿using UnnamedFactoryGame.Screen;
 using Frent;
 
-namespace Cosmi;
+namespace UnnamedFactoryGame;
 
 public class GameRoot : Game
 {

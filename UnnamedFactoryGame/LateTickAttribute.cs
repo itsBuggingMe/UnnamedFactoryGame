@@ -1,5 +1,5 @@
 ﻿using Frent.Updating;
 
-namespace Cosmi;
+namespace UnnamedFactoryGame;
 
 internal sealed class LateTickAttribute : UpdateTypeAttribute;

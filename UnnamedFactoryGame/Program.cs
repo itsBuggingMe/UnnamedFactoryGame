@@ -1,2 +1,2 @@
-﻿using var game = new Cosmi.GameRoot();
+﻿using var game = new UnnamedFactoryGame.GameRoot();
 game.Run();

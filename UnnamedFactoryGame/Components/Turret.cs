@@ -1,8 +1,8 @@
-﻿using Cosmi.Level;
+﻿using UnnamedFactoryGame.Level;
 using Frent;
 using Frent.Components;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 internal struct Turret(Entity @base) : IInitable, IUniformUpdate<Graphics, Transform>
 {

@@ -2,7 +2,7 @@
 using Frent.Components;
 using System;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 internal struct RotateTowards(Entity target, float smoothing = 0.9f) : IUpdate<Transform>
 {

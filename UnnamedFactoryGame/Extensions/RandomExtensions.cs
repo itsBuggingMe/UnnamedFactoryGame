@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cosmi.Extensions;
+namespace UnnamedFactoryGame.Extensions;
 
 internal static class RandomExtensions
 {

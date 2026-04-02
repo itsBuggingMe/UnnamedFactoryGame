@@ -1,6 +1,6 @@
 ﻿using Frent;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 internal struct ItemAcceptor
 {

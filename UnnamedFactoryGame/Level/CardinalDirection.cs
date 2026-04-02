@@ -1,11 +1,17 @@
-﻿namespace Cosmi.Level;
+﻿using System.Text.Json.Serialization;
+
+namespace UnnamedFactoryGame.Level;
 
 internal enum CardinalDirection
 {
     // multiply by pi / 2 to get angle
+    [JsonStringEnumMemberName("right")]
     Right = 0,
+    [JsonStringEnumMemberName("up")]
     Up = 1,
+    [JsonStringEnumMemberName("left")]
     Left = 2,
+    [JsonStringEnumMemberName("down")]
     Down = 3,
 }
 

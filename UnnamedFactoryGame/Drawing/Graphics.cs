@@ -4,7 +4,7 @@ using Paper.Core;
 using Paper.Core.Batcher;
 using System.IO;
 
-namespace Cosmi.Drawing;
+namespace UnnamedFactoryGame.Drawing;
 
 internal class Graphics : GraphicsBase
 {

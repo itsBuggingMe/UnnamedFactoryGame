@@ -1,7 +1,7 @@
 ﻿using Frent;
 using Frent.Components;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 internal struct Decay(float TimeLeft) : IEntityUpdate
 {

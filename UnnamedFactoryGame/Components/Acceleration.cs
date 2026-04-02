@@ -1,6 +1,6 @@
 ﻿using Frent.Components;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 /// <summary>
 /// as if you applied a continuous, conservative force porportional to mass

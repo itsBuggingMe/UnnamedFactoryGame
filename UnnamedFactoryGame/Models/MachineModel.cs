@@ -1,41 +1,31 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
+using UnnamedFactoryGame.Level;
 
 namespace UnnamedFactoryGame.Models;
 
+internal record class MachineModel(
+    [property: JsonPropertyName("texture")] string Texture,
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("inputs")] Input[] Inputs,
+    [property: JsonPropertyName("outputs")] Output[] Outputs,
+    [property: JsonPropertyName("additional_components")] object[] AdditionalComponents,
+    [property: JsonPropertyName("additional_component_types")] object[] AdditionalComponentTypes
+    );
 
-public class MachineModel
-{
-    [JsonPropertyName("texture")]
-    public string Texture { get; set; }
-    [JsonPropertyName("name")]
-    public string Name { get; set; }
-    [JsonPropertyName("inputs")]
-    public Input[] Inputs { get; set; }
-    [JsonPropertyName("outputs")]
-    public Output[] Outputs { get; set; }
-    [JsonPropertyName("additional_components")]
-    public object[] AdditionalComponents { get; set; }
-    [JsonPropertyName("additional_component_types")]
-    public object[] AdditionalComponentTypes { get; set; }
-}
+internal record class Hitbox(
+    [property: JsonPropertyName("x")] int X,
+    [property: JsonPropertyName("y")] int Y
+    );
 
-public class Hitbox
-{
-    public int x { get; set; }
-    public int y { get; set; }
-}
+internal record class Input(
+    [property: JsonPropertyName("x")] int X,
+    [property: JsonPropertyName("y")] int Y,
+    [property: JsonPropertyName("direction"), JsonConverter(typeof(JsonStringEnumConverter))] CardinalDirection Direction,
+    [property: JsonPropertyName("accepts")] string Accepts
+    );
 
-public class Input
-{
-    public int x { get; set; }
-    public int y { get; set; }
-    public string direction { get; set; }
-    public string accepts { get; set; }
-}
-
-public class Output
-{
-    public int x { get; set; }
-    public int y { get; set; }
-    public string direction { get; set; }
-}
+internal record class Output(
+    [property: JsonPropertyName("x")] int X,
+    [property: JsonPropertyName("y")] int Y,
+    [property: JsonPropertyName("direction"), JsonConverter(typeof(JsonStringEnumConverter))] CardinalDirection Direction
+    );

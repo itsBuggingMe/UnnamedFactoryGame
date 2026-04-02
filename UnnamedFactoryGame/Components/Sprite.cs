@@ -3,7 +3,7 @@ using Frent.Components;
 using Paper.Core.Batcher;
 using System.Threading;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 internal struct Sprite : IUniformUpdate<Graphics, Transform>, IInitable
 {

@@ -1,4 +1,4 @@
-﻿namespace Cosmi.Components;
+﻿namespace UnnamedFactoryGame.Components;
 
 internal struct Transform(Vector2 pos, float rot)
 {

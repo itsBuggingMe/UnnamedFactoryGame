@@ -1,11 +1,11 @@
-﻿using Cosmi.Components;
-using Cosmi.Level;
+using UnnamedFactoryGame.Components;
+using UnnamedFactoryGame.Level;
 using Frent;
 using Frent.Serialization;
 using Paper.Core.Batcher;
 using UnnamedFactoryGame.Registry;
 
-namespace Cosmi.Screen;
+namespace UnnamedFactoryGame.Screen;
 
 internal class MainGameScreen : IScreen
 {
@@ -20,6 +20,7 @@ internal class MainGameScreen : IScreen
     private readonly DefaultUniformProvider _uniforms;
     private readonly FloorTileRegistry _floorTiles;
     private readonly ItemRegistry _items;
+    private readonly MachineRegistry _machines;
 
     private SpriteBatch SpriteBatch;
 
@@ -45,6 +46,7 @@ internal class MainGameScreen : IScreen
             .Add(_tiles)
             .Add(_items = new(graphics))
             .Add(_floorTiles = new(graphics, _items))
+            .Add(_machines = new(graphics))
             ;
 
         _world = new World(_uniforms);
@@ -88,6 +90,8 @@ internal class MainGameScreen : IScreen
             Animation.Mine,
             new Sprite(graphics.Mine)
             );
+
+        _machines.CreateMachine(_world, "coke_oven", new Point(16, 8));
     }
 
     public void Update(Time gameTime)

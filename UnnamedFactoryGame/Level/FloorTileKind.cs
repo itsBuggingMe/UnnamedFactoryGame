@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cosmi.Level;
+namespace UnnamedFactoryGame.Level;
 
 public enum FloorTileKind
 {

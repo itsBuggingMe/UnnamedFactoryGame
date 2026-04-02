@@ -1,11 +1,11 @@
-﻿using Cosmi.Level;
+﻿using UnnamedFactoryGame.Level;
 using Frent;
 using Frent.Components;
 using Frent.Core;
 using Paper.Core.Batcher;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 internal struct Animation : IInitable, IUniformUpdate<Time, Sprite>
 {
@@ -60,10 +60,10 @@ internal struct Animation : IInitable, IUniformUpdate<Time, Sprite>
     {
         InitalFrame = new Rectangle(Point.Zero, new(TileGrid.TilePixelSize)),
         FrameOffset = new(TileGrid.TilePixelSize, 0),
-        Spritesheet = "conveyor",
+        Spritesheet = "Textures/conveyor",
         FrameTime = Components.Conveyor.Speed / 8,
         FrameCount = 8,
     };
 
-    public static readonly Animation Mine = Conveyor with { Spritesheet = "mine" };
+    public static readonly Animation Mine = Conveyor with { Spritesheet = "Textures/mine" };
 }

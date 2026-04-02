@@ -3,7 +3,7 @@ using Frent.Components;
 using System;
 using System.Runtime.CompilerServices;
 
-namespace Cosmi.Components;
+namespace UnnamedFactoryGame.Components;
 
 delegate void TweenDelegate<T>(Entity e, ref T component, float progress);
 internal partial struct Tween<T>(TweenType type, float length, float startDelay, TweenDelegate<T> action) : IEntityUpdate<T>
