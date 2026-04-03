@@ -13,11 +13,12 @@ internal struct TileEntity(Point coord) : IInitable, IDestroyable
     {
         ref Entity tileSlot = ref self.World.UniformProvider
             .GetUniform<TileGrid>()[Coordinate];
-        if (tileSlot.IsAlive && !tileSlot.Has<MachineInput>())
-            tileSlot.Delete();
+
+        if (tileSlot.IsAlive)
+            throw new System.Exception("Tile exists here already!");
         tileSlot = self;
 
-        if(self.TryGet<Transform>(out var v))
+        if (self.TryGet<Transform>(out var v))
         {
             v.Value.Position = Coordinate * 32;
         }

@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
+using Paper.Core.Editor;
+using Frent.Marshalling;
 
 namespace UnnamedFactoryGame.Components;
 
@@ -93,6 +95,7 @@ internal struct Conveyor(CardinalDirection cardinalDirection) :
     [LateTick]
     public void Update(TileGrid grid, ref TileEntity arg)
     {
+        var x = grid[arg.Coordinate + Direction.UnitVector];
         if (_tempItem.IsAlive &&
             grid[arg.Coordinate + Direction.UnitVector].TryGet<ItemAcceptor>(out var acc) && 
             acc.Value.TryPlace(_tempItem))

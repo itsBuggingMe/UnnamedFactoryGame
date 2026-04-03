@@ -32,8 +32,8 @@ internal class MachineRegistry
 
         return world.Create(
             new Transform(coordinate.ToVector2() * TileGrid.TilePixelSize, 0),
-            new TileEntity(coordinate),
             new Sprite(machineData.Handle),
-            new Machine(machineData.Data, world, coordinate) { Facing = facing });
+            new Machine(machineData.Data, world, coordinate) { Facing = facing },
+            new LateDraw());
     }
 }

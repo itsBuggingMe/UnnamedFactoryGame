@@ -1,8 +1,10 @@
-using UnnamedFactoryGame.Components;
-using UnnamedFactoryGame.Level;
 using Frent;
 using Frent.Serialization;
+using ImGuiNET;
 using Paper.Core.Batcher;
+using Paper.Core.Editor;
+using UnnamedFactoryGame.Components;
+using UnnamedFactoryGame.Level;
 using UnnamedFactoryGame.Registry;
 
 namespace UnnamedFactoryGame.Screen;
@@ -24,6 +26,7 @@ internal class MainGameScreen : IScreen
 
     private SpriteBatch SpriteBatch;
 
+    private ImguiEditor _debugEditor;
 
     public MainGameScreen(Graphics graphics)
     {
@@ -52,8 +55,11 @@ internal class MainGameScreen : IScreen
         _world = new World(_uniforms);
         _uniforms.Add(_world);
 
+        _debugEditor = new ImguiEditor(graphics.Game, _world);
+
         Entity mouseEntity = _world.Create(new Transform(), new MousePosition());
 
+        /*
         int i = 1;
         for (; i < 10; i++)
         {
@@ -76,11 +82,11 @@ internal class MainGameScreen : IScreen
             new Transform(),
             new Turret(turretBase),
             new RotateTowards(mouseEntity),
-            new Sprite(graphics.TurretDouble, new Vector2(16)));
+            new Sprite(graphics.TurretDouble, new Vector2(16)));*/
 
-        for (i = 5; i < 16; i++)
+        for (int i = 5; i < 9; i++)
         {
-            var e = _world.Create(new Transform(), new TileEntity(new(i, 8)), new ItemAcceptor(), new Conveyor(CardinalDirection.Right), Animation.Conveyor, new Sprite());
+            _world.Create(new Transform(), new TileEntity(new(i, 8)), new ItemAcceptor(), new Conveyor(CardinalDirection.Right), Animation.Conveyor, new Sprite());
         }
 
         var mine = _world.Create(
@@ -88,10 +94,20 @@ internal class MainGameScreen : IScreen
             new TileEntity(new(4, 8)),
             new Mine() { Facing = CardinalDirection.Right },
             Animation.Mine,
-            new Sprite(graphics.Mine)
+            new Sprite(graphics.Mine),
+            new LateDraw()
             );
 
-        _machines.CreateMachine(_world, "coke_oven", new Point(16, 8));
+        _machines.CreateMachine(_world, "splitter", new Point(9, 8))
+            .Add(default(Splitter));// TODO: not hard code this
+
+        for(int i = 11; i < 14; i++)
+        {
+            _world.Create(new Transform(), new TileEntity(new(i, 8)), new ItemAcceptor(), new Conveyor(CardinalDirection.Right), Animation.Conveyor, new Sprite());
+            _world.Create(new Transform(), new TileEntity(new(i, 9)), new ItemAcceptor(), new Conveyor(CardinalDirection.Right), Animation.Conveyor, new Sprite());
+        }
+
+        _machines.CreateMachine(_world, "coke_oven", new Point(14, 8));
     }
 
     public void Update(Time gameTime)
@@ -100,25 +116,28 @@ internal class MainGameScreen : IScreen
 
         Vector2 mousePos = _camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2());
 
-        Vector2 cameraDelta = default;
-        if (InputHelper.Down(Keys.W)) cameraDelta += Vector2.UnitY;
-        if (InputHelper.Down(Keys.S)) cameraDelta -= Vector2.UnitY;
-        if (InputHelper.Down(Keys.D)) cameraDelta -= Vector2.UnitX;
-        if (InputHelper.Down(Keys.A)) cameraDelta += Vector2.UnitX;
-
-        _camera.Position += cameraDelta * gameTime.FrameDeltaTime * 5;
-
-        if (InputHelper.Down(MouseButton.Left) && InputHelper.Down(Keys.LeftControl))
-            _tiles.FloorTileAt((_camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2()) / 32).ToPoint()) = FloorTileKind.Coal;
-        if (InputHelper.Down(MouseButton.Right) && InputHelper.Down(Keys.LeftControl))
-            _tiles.FloorTileAt((_camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2()) / 32).ToPoint()) = FloorTileKind.Grass;
-
-        _camera.Scale *= InputHelper.DeltaScroll switch
+        if(!ImGui.GetIO().WantCaptureMouse)
         {
-            > 0 => 1.1f,
-            < 0 => 1 / 1.1f,
-            _ => 1
-        };
+            Vector2 cameraDelta = default;
+            if (InputHelper.Down(Keys.W)) cameraDelta += Vector2.UnitY;
+            if (InputHelper.Down(Keys.S)) cameraDelta -= Vector2.UnitY;
+            if (InputHelper.Down(Keys.D)) cameraDelta -= Vector2.UnitX;
+            if (InputHelper.Down(Keys.A)) cameraDelta += Vector2.UnitX;
+
+            _camera.Position += cameraDelta * gameTime.FrameDeltaTime * 5;
+
+            if (InputHelper.Down(MouseButton.Left) && InputHelper.Down(Keys.LeftControl))
+                _tiles.FloorTileAt((_camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2()) / 32).ToPoint()) = FloorTileKind.Coal;
+            if (InputHelper.Down(MouseButton.Right) && InputHelper.Down(Keys.LeftControl))
+                _tiles.FloorTileAt((_camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2()) / 32).ToPoint()) = FloorTileKind.Grass;
+
+            _camera.Scale *= InputHelper.DeltaScroll switch
+            {
+                > 0 => 1.1f,
+                < 0 => 1 / 1.1f,
+                _ => 1
+            };
+        }
 
         if(!InputHelper.Down(Keys.F3) || InputHelper.RisingEdge(Keys.P))
         {
@@ -133,11 +152,15 @@ internal class MainGameScreen : IScreen
 
         SpriteBatch.Begin(transformMatrix: _camera.View * _camera.Projection);
 
-
+         
         _tiles.Draw(_graphics);
+        _world.Update<EarlyDrawAttribute>();
         _world.Update<DrawAttribute>();
+        _world.Update<LateDrawAttribute>();
 
         _batcher.Submit(_camera.View, _camera.Projection);
         SpriteBatch.End();
+
+        _debugEditor.Draw(gameTime.GameTime);
     }
 }
