@@ -1,11 +1,11 @@
 [
     {
-        "texture": "Textures/iron_ore",
+        "texture": "Textures\\iron_ore",
         "name": "iron_ore",
         "mine_production_output": "iron_ore"
     },
     {
-        "texture": "Textures/coal_ore",
+        "texture": "Textures\\coal_ore",
         "name": "coal_ore",
         "mine_production_output": "coal_ore"
     }

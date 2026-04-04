@@ -1,6 +1,6 @@
 [
     {
-        "texture": "Textures/coke_oven",
+        "texture": "Textures\\coke_oven",
         "name": "coke_oven",
         "hitbox": [
             {
@@ -45,7 +45,7 @@
         "additional_component_types": []
     },
     {
-        "texture": "Textures/splitter",
+        "texture": "Textures\\splitter",
         "name": "splitter",
         "hitbox": [
             {

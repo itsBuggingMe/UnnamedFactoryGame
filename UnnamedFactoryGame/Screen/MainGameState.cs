@@ -58,13 +58,19 @@ internal class MainGameScreen : IScreen
         _world = new World(_uniforms);
         _uniforms.Add(_world);
 
+
+        #region Editor Setup
         _debugEditor = new ImguiEditor(graphics.Game, _world, 
-            typeof(MainGameScreen)
+        typeof(MainGameScreen)
                 .Assembly
                 .GetTypes()
-                .Where(t => t.IsAssignableTo(typeof(IFieldModifer)))
+                .Where(t => t.IsAssignableTo(typeof(IFieldModifer)) && !t.IsGenericTypeDefinition)
                 .Select(Activator.CreateInstance)
                 .Cast<IFieldModifer>());
+
+        _uniforms.Add(_debugEditor);
+        _uniforms.Add(_debugEditor.Renderer);
+        #endregion
 
         Entity mouseEntity = _world.Create(new Transform(), new MousePosition());
 
@@ -129,14 +135,6 @@ internal class MainGameScreen : IScreen
 
         if(!ImGui.GetIO().WantCaptureMouse)
         {
-            Vector2 cameraDelta = default;
-            if (InputHelper.Down(Keys.W)) cameraDelta += Vector2.UnitY;
-            if (InputHelper.Down(Keys.S)) cameraDelta -= Vector2.UnitY;
-            if (InputHelper.Down(Keys.D)) cameraDelta -= Vector2.UnitX;
-            if (InputHelper.Down(Keys.A)) cameraDelta += Vector2.UnitX;
-
-            _camera.Position += cameraDelta * gameTime.FrameDeltaTime * 5;
-
             if (InputHelper.Down(MouseButton.Left) && InputHelper.Down(Keys.LeftControl))
                 _tiles.FloorTileAt((_camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2()) / 32).ToPoint()) = FloorTileKind.Coal;
             if (InputHelper.Down(MouseButton.Right) && InputHelper.Down(Keys.LeftControl))
@@ -150,7 +148,15 @@ internal class MainGameScreen : IScreen
             };
         }
 
-        if(!InputHelper.Down(Keys.F3) || InputHelper.RisingEdge(Keys.P))
+        Vector2 cameraDelta = default;
+        if (InputHelper.Down(Keys.W)) cameraDelta += Vector2.UnitY;
+        if (InputHelper.Down(Keys.S)) cameraDelta -= Vector2.UnitY;
+        if (InputHelper.Down(Keys.D)) cameraDelta -= Vector2.UnitX;
+        if (InputHelper.Down(Keys.A)) cameraDelta += Vector2.UnitX;
+
+        _camera.Position += cameraDelta * gameTime.FrameDeltaTime * 5;
+
+        if (!InputHelper.Down(Keys.F3) || InputHelper.RisingEdge(Keys.P))
         {
             _world.Update<TickAttribute>();
             _world.Update<LateTickAttribute>();

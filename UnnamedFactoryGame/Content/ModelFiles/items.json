@@ -1,26 +1,26 @@
 [
     {
-        "texture": "Textures/iron_ore_item",
+        "texture": "Textures\\iron_ore_item",
         "name": "iron_ore"
     },
     {
-        "texture": "Textures/coal_ore_item",
+        "texture": "Textures\\coal_ore_item",
         "name": "coal_ore"
     },
     {
-        "texture": "Textures/round_0",
+        "texture": "Textures\\round_0",
         "name": "9mm"
     },
     {
-        "texture": "Textures/bullet_0",
+        "texture": "Textures\\bullet_0",
         "name": "bullet_9mm"
     },
     {
-        "texture": "Textures/casing_0",
+        "texture": "Textures\\casing_0",
         "name": "casing_9mm"
     },
     {
-        "texture": "Textures/coke",
+        "texture": "Textures\\coke",
         "name": "coke"
     }
 ]

@@ -18,6 +18,7 @@ internal struct Conveyor(CardinalDirection cardinalDirection) :
 {
     // simple implementation for now
     private float _timer;
+    [EditorInclude]
     private InlineArray3<Entity> _items;
     private Entity _self;
 
