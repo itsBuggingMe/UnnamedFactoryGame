@@ -15,12 +15,15 @@ public class GameRoot : Game
         };
 
         Window.AllowUserResizing = true;
+        _graphics.HardwareModeSwitch = false;
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
 
     protected override void Initialize()
     {
+        _graphics.ToggleFullScreen();
+
         Graphics graphics = new(_graphics, Content, this);
 
         ServiceContainer serviceContainer = new();

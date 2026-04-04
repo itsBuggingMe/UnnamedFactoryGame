@@ -20,7 +20,11 @@ internal struct TileEntity(Point coord) : IInitable, IDestroyable
 
         if (self.TryGet<Transform>(out var v))
         {
-            v.Value.Position = Coordinate * 32;
+            v.Value.Position = Coordinate * TileGrid.TilePixelSize + new Vector2(TileGrid.TilePixelSize / 2);
+        }
+        if (self.TryGet<Sprite>(out var sprite))
+        {
+            sprite.Value.Origin = new Vector2(TileGrid.TilePixelSize / 2);
         }
 
         Self = self;

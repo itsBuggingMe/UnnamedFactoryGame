@@ -12,7 +12,7 @@ using Frent.Marshalling;
 namespace UnnamedFactoryGame.Components;
 
 internal struct Conveyor(CardinalDirection cardinalDirection) :
-    IUniformUpdate<(Time Time, TileGrid Tiles), TileEntity, Animation, ItemAcceptor>,
+    IUniformUpdate<(Time Time, TileGrid Tiles), Transform, TileEntity, Animation, ItemAcceptor>,
     IUniformUpdate<TileGrid, TileEntity>,
     IInitable
 {
@@ -36,7 +36,7 @@ internal struct Conveyor(CardinalDirection cardinalDirection) :
     public const float Speed = 30;
 
     [Tick]
-    public void Update((Time Time, TileGrid Tiles) u, ref TileEntity positioned, ref Animation animation, ref ItemAcceptor slot1)
+    public void Update((Time Time, TileGrid Tiles) u, ref Transform transform, ref TileEntity positioned, ref Animation animation, ref ItemAcceptor slot1)
     {
         _timer += u.Time.FrameDeltaTime;
         if(_timer > Speed)
@@ -68,6 +68,8 @@ internal struct Conveyor(CardinalDirection cardinalDirection) :
         } + positioned.Coordinate.ToVector2()) * TileGrid.TilePixelSize;
 
         Vector2 itemSpacing = Direction.UnitVector.ToVector2() * 0.25f * TileGrid.TilePixelSize;
+
+        transform.Rotation = (int)Direction * MathHelper.PiOver2;
 
         const int ItemCount = 4;
         for(int i = 0; i < ItemCount; i++)

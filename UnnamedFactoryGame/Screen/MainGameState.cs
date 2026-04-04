@@ -3,6 +3,9 @@ using Frent.Serialization;
 using ImGuiNET;
 using Paper.Core.Batcher;
 using Paper.Core.Editor;
+using System;
+using System.IO;
+using System.Linq;
 using UnnamedFactoryGame.Components;
 using UnnamedFactoryGame.Level;
 using UnnamedFactoryGame.Registry;
@@ -55,7 +58,13 @@ internal class MainGameScreen : IScreen
         _world = new World(_uniforms);
         _uniforms.Add(_world);
 
-        _debugEditor = new ImguiEditor(graphics.Game, _world);
+        _debugEditor = new ImguiEditor(graphics.Game, _world, 
+            typeof(MainGameScreen)
+                .Assembly
+                .GetTypes()
+                .Where(t => t.IsAssignableTo(typeof(IFieldModifer)))
+                .Select(Activator.CreateInstance)
+                .Cast<IFieldModifer>());
 
         Entity mouseEntity = _world.Create(new Transform(), new MousePosition());
 
@@ -97,7 +106,7 @@ internal class MainGameScreen : IScreen
             new Sprite(graphics.Mine),
             new LateDraw()
             );
-
+        Keyboard.GetState();
         _machines.CreateMachine(_world, "splitter", new Point(9, 8))
             .Add(default(Splitter));// TODO: not hard code this
 
@@ -112,6 +121,8 @@ internal class MainGameScreen : IScreen
 
     public void Update(Time gameTime)
     {
+        if (InputHelper.Down(Keys.Escape))
+            _graphics.Game.Exit();
         _uniforms.Add(gameTime);
 
         Vector2 mousePos = _camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2());
