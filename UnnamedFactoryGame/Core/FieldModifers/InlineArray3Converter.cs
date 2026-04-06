@@ -22,6 +22,8 @@ internal class InlineArray3EntityConverter : IFieldModifer
         if (FieldToModify is null)
             return;
 
+        ImGui.Text(FieldToModify.Name);
+
         InlineArray3<Entity> old = (InlineArray3<Entity>)FieldToModify.GetValue(Entity.Get(FieldToModify.ComponentID));
 
         int i = 0;

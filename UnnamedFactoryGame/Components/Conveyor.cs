@@ -20,6 +20,8 @@ internal struct Conveyor(CardinalDirection cardinalDirection) :
     private float _timer;
     [EditorInclude]
     private InlineArray3<Entity> _items;
+    [EditorInclude]
+    private InlineArray4<float> _itemProgresses;
     private Entity _self;
 
     [UnscopedRef]
@@ -37,7 +39,7 @@ internal struct Conveyor(CardinalDirection cardinalDirection) :
     public const float Speed = 30;
 
     [Tick]
-    public void Update((Time Time, TileGrid Tiles) u, ref Transform transform, ref TileEntity positioned, ref Animation animation, ref ItemAcceptor slot1)
+    public void Update((Time Time, TileGrid Tiles) u, ref Transform transform, ref TileEntity positioned, ref Animation animation, ref ItemAcceptor slot0)
     {
         _timer += u.Time.FrameDeltaTime;
         if(_timer > Speed)
@@ -49,13 +51,19 @@ internal struct Conveyor(CardinalDirection cardinalDirection) :
                 acc.Value.CanPlace)
             {
                 _tempItem = Items[^1];
-                Items[..2].CopyTo(Items[1..]);
-                this[1] = slot1.CurrentItem;
-                slot1.CurrentItem = default;
             }
             else
             {// we are blocked :(
                 _timer = Speed;
+            }
+
+            for(int i = 2; i >= 0; i--)
+            {
+                if (!this[i + 1].IsAlive)
+                {
+                    this[i + 1] = this[i];
+                    this[i] = default;
+                }
             }
         }
 
