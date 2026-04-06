@@ -8,6 +8,7 @@ namespace UnnamedFactoryGame.Components;
 internal struct Item : IInitable
 {
     public float ConveyorOffset;
+    public string ItemKind;
 
     public void Init(Entity self)
     {

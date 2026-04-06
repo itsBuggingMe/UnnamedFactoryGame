@@ -28,7 +28,7 @@ internal struct Machine : IInitable
                 new Transform(),
                 new TileEntity(inputCoord),
                 new ItemAcceptor(),
-                new Conveyor(input.Direction),
+                new Conveyor(input.Direction) { DisableOutput = true },
                 new MachineInput(default),
                 Animation.Conveyor,
                 new Sprite());

@@ -15,16 +15,22 @@ internal struct Splitter : IUpdate, IInitable
     [Tick]
     public void Update()
     {
-        if(_input.TryGet<ItemAcceptor>(out var inputItemAcceptor) && inputItemAcceptor.Value.HasItem)
+        if(_input.TryGet<Conveyor>(out var inputConveyor))
         {
+            ref Entity inputItem = ref inputConveyor.Value[3];
             Entity outputConveyor = _tick ? _outputA : _outputB;
 
             ref var outputItemAcceptor = ref outputConveyor.Get<ItemAcceptor>();
 
-            if(outputItemAcceptor.TryPlace(inputItemAcceptor.Value.CurrentItem))
+            if(outputItemAcceptor.TryPlace(inputItem))
             {
                 _tick = !_tick;
-                inputItemAcceptor.Value.CurrentItem = default;
+                inputItem = default;
+            }
+            else if((_tick ? _outputB : _outputA).TryGet<ItemAcceptor>(out var acc) && acc.Value.TryPlace(inputItem))
+            {
+                inputItem = default;
+
             }
         }
     }

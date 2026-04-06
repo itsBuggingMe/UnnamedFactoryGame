@@ -16,18 +16,19 @@ internal struct Conveyor(CardinalDirection cardinalDirection) :
     IUniformUpdate<TileGrid, TileEntity>,
     IInitable
 {
-    // simple implementation for now
-    private float _timer;
     [EditorInclude]
     private InlineArray3<Entity> _items;
     [EditorInclude]
-    private InlineArray4<float> _itemProgresses;
+    private InlineArray4<float> _timers;
     private Entity _self;
 
     [UnscopedRef]
     public ref Entity this[int index] => ref index == 0 ?
         ref _self.Get<ItemAcceptor>().CurrentItem :
         ref _items[index - 1];
+
+    [EditorInclude]
+    public bool DisableOutput;
 
     [UnscopedRef] private Span<Entity> Items => _items;
     public CardinalDirection Direction = cardinalDirection;
@@ -41,28 +42,40 @@ internal struct Conveyor(CardinalDirection cardinalDirection) :
     [Tick]
     public void Update((Time Time, TileGrid Tiles) u, ref Transform transform, ref TileEntity positioned, ref Animation animation, ref ItemAcceptor slot0)
     {
-        _timer += u.Time.FrameDeltaTime;
-        if(_timer > Speed)
+        for(int i = 3; i >= 0; i--)
         {
-            _timer -= Speed;
+            ref Entity item = ref this[i];
+            ref float timer = ref _timers[i];
 
-            if(!Items[^1].IsAlive ||
-                u.Tiles[positioned.Coordinate + Direction.UnitVector].TryGet<ItemAcceptor>(out var acc) &&
-                acc.Value.CanPlace)
+            if (!item.IsAlive)
             {
-                _tempItem = Items[^1];
-            }
-            else
-            {// we are blocked :(
-                _timer = Speed;
+                timer = 0;
+                continue;
             }
 
-            for(int i = 2; i >= 0; i--)
+            timer = Math.Min(Speed, timer + u.Time.FrameDeltaTime);
+            if(timer == Speed)
             {
-                if (!this[i + 1].IsAlive)
+                if(i == 3)
                 {
-                    this[i + 1] = this[i];
-                    this[i] = default;
+                    if(!DisableOutput &&
+                        u.Tiles[positioned.Coordinate + Direction.UnitVector].TryGet<ItemAcceptor>(out var acc) &&
+                        acc.Value.TryPlace(item))
+                    {
+                        item = default;
+                        timer = 0;
+                    }
+                }
+                else
+                {
+                    ref Entity nextSlot = ref this[i + 1];
+
+                    if (!nextSlot.IsAlive)
+                    {
+                        nextSlot = item;
+                        item = default;
+                        timer = 0;
+                    }
                 }
             }
         }
@@ -91,7 +104,7 @@ internal struct Conveyor(CardinalDirection cardinalDirection) :
                 var newpos = (
                     startOffset +
                     itemSpacing * i +
-                    Vector2.Lerp(Vector2.Zero, itemSpacing, _timer * (1f / Speed)) +
+                    Vector2.Lerp(Vector2.Zero, itemSpacing, _timers[i] * (1f / Speed)) +
                     ((CardinalDirection)((int)Direction + 1)).UnitVector.ToVector2() * itemOffset)
                     .ToPoint()
                     .ToVector2();
@@ -106,12 +119,6 @@ internal struct Conveyor(CardinalDirection cardinalDirection) :
     [LateTick]
     public void Update(TileGrid grid, ref TileEntity arg)
     {
-        var x = grid[arg.Coordinate + Direction.UnitVector];
-        if (_tempItem.IsAlive &&
-            grid[arg.Coordinate + Direction.UnitVector].TryGet<ItemAcceptor>(out var acc) && 
-            acc.Value.TryPlace(_tempItem))
-        {
-            _tempItem = default;
-        }
+
     }
 }
