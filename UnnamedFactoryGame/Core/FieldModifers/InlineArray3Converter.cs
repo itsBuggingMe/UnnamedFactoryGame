@@ -35,12 +35,12 @@ internal class InlineArray3EntityConverter : IFieldModifer
         FieldToModify.SetValue(Entity, old);
     }
 
-    private static Entity UpdateOne(Entity current, string name)
+    private Entity UpdateOne(Entity current, string name)
     {
         int entity = EntityMarshal.EntityID(current);
-        if (ImGui.InputInt(name, ref entity, 0, 0, ImGuiInputTextFlags.None))
+        if (ImGui.InputInt(name, ref entity, 0, 0, ImGuiInputTextFlags.AutoSelectAll | ImGuiInputTextFlags.EnterReturnsTrue))
         {
-            foreach (var potentialTarget in current.World.CreateQuery().Build().EnumerateWithEntities())
+            foreach (var potentialTarget in Entity.World.CreateQuery().Build().EnumerateWithEntities())
             {
                 if (EntityMarshal.EntityID(potentialTarget) == entity)
                 {

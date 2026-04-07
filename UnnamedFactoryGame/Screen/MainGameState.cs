@@ -31,6 +31,8 @@ internal class MainGameScreen : IScreen
 
     private ImguiEditor _debugEditor;
 
+    private Entity _closestEntity;
+
     public MainGameScreen(Graphics graphics)
     {
         _graphics = graphics;
@@ -161,23 +163,90 @@ internal class MainGameScreen : IScreen
             _world.Update<TickAttribute>();
             _world.Update<LateTickAttribute>();
         }
+
+        Entity closest = default;
+        float closestDistance = float.MaxValue;
+
+        foreach (var (e, pos) in _world.CreateQuery()
+            .With<Transform>()
+            .With<Sprite>()
+            .Build()
+            .EnumerateWithEntities<Transform>())
+        {
+            float dist = Vector2.DistanceSquared(pos.Value.Position, mousePos);
+            if (dist < closestDistance)
+            {
+                closest = e;
+                closestDistance = dist;
+            }
+        }
+
+        _closestEntity = closest;
+
+        if (InputHelper.RisingEdge(MouseButton.Left) && GuessBoundingBox(_closestEntity) is { } box && box.Contains(mousePos))
+        {
+            _debugEditor.SelectedEntity = closest;
+        }
     }
 
     public void Draw(Time gameTime)
     {
         _graphics.GraphicsDevice.Clear(Color.Black);
 
-        SpriteBatch.Begin(transformMatrix: _camera.View * _camera.Projection);
+        SpriteBatch.Begin(transformMatrix: _camera.View);
 
          
         _tiles.Draw(_graphics);
         _world.Update<EarlyDrawAttribute>();
         _world.Update<DrawAttribute>();
         _world.Update<LateDrawAttribute>();
+        DrawEntitySelection(_closestEntity, true);
+        DrawEntitySelection(_debugEditor.SelectedEntity, false);
 
         _batcher.Submit(_camera.View, _camera.Projection);
-        SpriteBatch.End();
 
+        SpriteBatch.End();
+            
         _debugEditor.Draw(gameTime.GameTime);
+    }
+
+    private void DrawEntitySelection(Entity e, bool onlyDrawWhenOver)
+    {
+        if (GuessBoundingBox(e) is not { } rectangleToDraw)
+            return;
+
+        Vector2 mousePos = _camera.ScreenToWorld(InputHelper.MouseLocation.ToVector2());
+        if (onlyDrawWhenOver && !rectangleToDraw.Contains(mousePos))
+            return;
+
+
+        const int Width = 1;
+        SpriteBatch.Draw(_graphics.WhitePixel, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, rectangleToDraw.Width, Width), Color.Red);
+        SpriteBatch.Draw(_graphics.WhitePixel, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Bottom - Width, rectangleToDraw.Width, Width), Color.Red);
+        SpriteBatch.Draw(_graphics.WhitePixel, new Rectangle(rectangleToDraw.Left, rectangleToDraw.Top, Width, rectangleToDraw.Height), Color.Red);
+        SpriteBatch.Draw(_graphics.WhitePixel, new Rectangle(rectangleToDraw.Right - Width, rectangleToDraw.Top, Width, rectangleToDraw.Height), Color.Red);
+        SpriteBatch.Draw(_graphics.WhitePixel, e.Get<Transform>().Position, Color.Blue);
+    }
+
+    private Rectangle? GuessBoundingBox(Entity e)
+    {
+        if (!e.IsAlive)
+            return null;
+
+        if (!e.TryGet<Transform>(out var transform))
+            return null;
+
+        Rectangle? bounds = e.TryGet<Sprite>(out var sprite) ?
+            GetRectangleSprite(sprite.Value, transform.Value.Position) :
+            null;
+
+        return bounds;
+
+        Rectangle GetRectangleSprite(in Sprite s, Vector2 pos)
+        {
+            Vector2 position = pos - s.Origin;
+            Vector2 size = s.Source?.Size.ToVector2() ?? _batcher.GetTextureSize(s.Texture) * s.Scale;
+            return new Rectangle(position.ToPoint(), size.ToPoint());
+        }
     }
 }
